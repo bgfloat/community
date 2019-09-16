@@ -16,6 +16,10 @@
 [Maven 仓库](https://mvnrepository.com/)
 
 [菜鸟教程](https://www.runoob.com/)
+
+[H2 数据库](http://www.h2database.com/html/main.html)
+
+[Spring](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-embedded-database-support)
 ## 工具
 [Git](https://git-scm.com/download)
 [VP](https://www.visual-paradigm.com/cn/)
