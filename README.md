@@ -5,11 +5,17 @@
 
 [Spring Web文档](https://spring.io/guides/gs/serving-web-content/)
 
-[es](https://elasticsearch.cn/)
+[es 社区](https://elasticsearch.cn/)
 
 [Bootstrap](https://v3.bootcss.com/getting-started/)
 
 [Github OAuth](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
+
+[OkHttp](https://square.github.io/okhttp/)
+
+[Maven 仓库](https://mvnrepository.com/)
+
+[菜鸟教程](https://www.runoob.com/)
 ## 工具
 [Git](https://git-scm.com/download)
 [VP](https://www.visual-paradigm.com/cn/)
