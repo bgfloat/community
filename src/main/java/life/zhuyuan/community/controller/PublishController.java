@@ -39,18 +39,20 @@ public class PublishController {
         model.addAttribute("description", description);
         model.addAttribute("tags", tags);
         if (title == null || title == "") {
-            model.addAttribute("error","标题不能为空");
+            model.addAttribute("error", "标题不能为空");
             return "publish";
-        }   if (description == null || description == "") {
-            model.addAttribute("error","问题不能为空");
+        }
+        if (description == null || description == "") {
+            model.addAttribute("error", "问题不能为空");
             return "publish";
-        }   if (tags == null || tags == "") {
-            model.addAttribute("error","标签不能为空");
+        }
+        if (tags == null || tags == "") {
+            model.addAttribute("error", "标签不能为空");
             return "publish";
         }
         User user = null;
         Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
+        if (cookies != null && cookies.length != 0) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     String token = cookie.getValue();
