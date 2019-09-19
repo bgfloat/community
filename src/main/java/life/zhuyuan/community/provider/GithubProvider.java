@@ -1,7 +1,6 @@
 package life.zhuyuan.community.provider;
 
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.annotation.JsonAlias;
 import life.zhuyuan.community.dto.AccessTokenDTO;
 import life.zhuyuan.community.dto.GithubUser;
 import okhttp3.*;
