@@ -19,13 +19,7 @@ public class PaginationDTO {
     private Integer totalPage;
     private List<Integer> pages = new ArrayList<>();
 
-    public void setPagination(Integer totalCount, Integer page, Integer size) {
-        if (totalCount % size == 0) {
-            totalPage = totalCount / size;
-        } else {
-            totalPage = totalCount / size + 1;
-        }
-
+    public void setPagination(Integer totalPage, Integer page, Integer size) {
         this.page = page;
 
         pages.add(page);
