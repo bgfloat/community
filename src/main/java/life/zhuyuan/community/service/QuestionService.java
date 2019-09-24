@@ -4,6 +4,7 @@ import life.zhuyuan.community.dto.PaginationDTO;
 import life.zhuyuan.community.dto.QuestionDTO;
 import life.zhuyuan.community.exception.CustomizeErrorCode;
 import life.zhuyuan.community.exception.CustomizeException;
+import life.zhuyuan.community.mapper.QuestionExtMapper;
 import life.zhuyuan.community.mapper.QuestionMapper;
 import life.zhuyuan.community.mapper.UserMapper;
 import life.zhuyuan.community.model.Question;
@@ -25,6 +26,9 @@ public class QuestionService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PaginationDTO list(Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
@@ -118,6 +122,10 @@ public class QuestionService {
         if (question.getId() == null) {
             //创建
             question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            question.setViewCount(0);
+            question.setLikeCount(0);
+            question.setCommentCount(0);
             questionMapper.insert(question);
         } else {
             //更新
@@ -130,10 +138,17 @@ public class QuestionService {
             example.createCriteria()
                     .andIdEqualTo(question.getId());
             int update = questionMapper.updateByExampleSelective(updateQuestion, example);
-            if (update != 1){
+            if (update != 1) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
+    }
+
+    public void incView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }
 
