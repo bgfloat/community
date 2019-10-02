@@ -1,7 +1,6 @@
 package life.zhuyuan.community.controller;
 
 import life.zhuyuan.community.dto.QuestionDTO;
-import life.zhuyuan.community.mapper.QuestionMapper;
 import life.zhuyuan.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,7 @@ public class QuestionController {
     private QuestionService questionService;
 
     @GetMapping("/question/{id}")
-    public String question(@PathVariable(name = "id") Integer id,
+    public String question(@PathVariable(name = "id") Long id,
                            Model model
     ) {
         QuestionDTO questionDTO = questionService.getById(id);
