@@ -1,6 +1,6 @@
 package life.zhuyuan.community.controller;
 
-import life.zhuyuan.community.dto.CommentDTO;
+import life.zhuyuan.community.dto.CommentCreatDTO;
 import life.zhuyuan.community.dto.ResultDTO;
 import life.zhuyuan.community.exception.CustomizeErrorCode;
 import life.zhuyuan.community.model.Comment;
@@ -23,7 +23,7 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
-    public Object post(@RequestBody CommentDTO commentDTO,
+    public Object post(@RequestBody CommentCreatDTO commentCreatDTO,
                        HttpServletRequest request
     ) {
         User user = (User) request.getSession().getAttribute("user");
@@ -32,9 +32,9 @@ public class CommentController {
         }
 
         Comment comment = new Comment();
-        comment.setParentId(commentDTO.getParentId());
-        comment.setContent(commentDTO.getContent());
-        comment.setType(commentDTO.getType());
+        comment.setParentId(commentCreatDTO.getParentId());
+        comment.setContent(commentCreatDTO.getContent());
+        comment.setType(commentCreatDTO.getType());
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(System.currentTimeMillis());
         comment.setCommentator(user.getId());
