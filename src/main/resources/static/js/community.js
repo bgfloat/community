@@ -13,10 +13,18 @@ function post() {
         success: function (response) {
             if (response.code === 200) {
                 $("#comment_section").hide();
-            }else{
-                alert(response.message)
+            } else {
+                if (response.code == 2003){
+                    var isAccepted = confirm(response.message);
+                    if (isAccepted){
+                        window.open("https://github.com/login/oauth/authorize?client_id=4b55c974393c33eb6ac4&redirect_uri=http://localhost:8887/callback&state=1");
+                        window.localStorage.setItem("closable",true);
+                    }
+
+                }else{
+                    alert(response.message)
+                }
             }
-            console.log(response);
         },
         dataType: "json"
     });
