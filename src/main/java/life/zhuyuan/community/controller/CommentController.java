@@ -6,6 +6,7 @@ import life.zhuyuan.community.exception.CustomizeErrorCode;
 import life.zhuyuan.community.model.Comment;
 import life.zhuyuan.community.model.User;
 import life.zhuyuan.community.service.CommentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,8 +28,12 @@ public class CommentController {
                        HttpServletRequest request
     ) {
         User user = (User) request.getSession().getAttribute("user");
-        if(user == null){
+        if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
+
+        if (commentCreatDTO == null || StringUtils.isBlank(commentCreatDTO.getContent())) {
+            return ResultDTO.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
         }
 
         Comment comment = new Comment();
