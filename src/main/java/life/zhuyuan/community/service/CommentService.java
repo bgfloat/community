@@ -4,10 +4,7 @@ import life.zhuyuan.community.dto.CommentDTO;
 import life.zhuyuan.community.enums.CommentTypeEnum;
 import life.zhuyuan.community.exception.CustomizeErrorCode;
 import life.zhuyuan.community.exception.CustomizeException;
-import life.zhuyuan.community.mapper.CommentMapper;
-import life.zhuyuan.community.mapper.QuestionExtMapper;
-import life.zhuyuan.community.mapper.QuestionMapper;
-import life.zhuyuan.community.mapper.UserMapper;
+import life.zhuyuan.community.mapper.*;
 import life.zhuyuan.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +27,13 @@ public class CommentService {
     private QuestionMapper questionMapper;
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private QuestionExtMapper questionExtMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private CommentExtMapper commentExtMapper;
 
     @Transactional
     public void insert(Comment comment) {
@@ -52,6 +52,11 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            //增加评论回复数
+            Comment parentComment = new Comment();
+            parentComment.setId(comment.getParentId());
+            parentComment.setCommentCount(1);
+            commentExtMapper.incCommentCount(parentComment);
         } else {
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -59,6 +64,7 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            //增加问题回复数
             question.setCommentCount(1);
             questionExtMapper.incCommentCount(question);
         }
