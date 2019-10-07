@@ -1,8 +1,8 @@
 package life.zhuyuan.community.controller;
 
-import life.zhuyuan.community.dto.CommentCreatDTO;
 import life.zhuyuan.community.dto.CommentDTO;
 import life.zhuyuan.community.dto.QuestionDTO;
+import life.zhuyuan.community.enums.CommentTypeEnum;
 import life.zhuyuan.community.service.CommentService;
 import life.zhuyuan.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class QuestionController {
     ) {
         QuestionDTO questionDTO = questionService.getById(id);
 
-        List<CommentDTO> comments = commentService.listByQuestionId(id);
+        List<CommentDTO> comments = commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
         //累加阅读数
         questionService.incView(id);
         model.addAttribute("question",questionDTO);
