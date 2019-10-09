@@ -1,9 +1,11 @@
 package life.zhuyuan.community.controller;
 
+import life.zhuyuan.community.cache.TagCache;
 import life.zhuyuan.community.dto.QuestionDTO;
 import life.zhuyuan.community.model.Question;
 import life.zhuyuan.community.model.User;
 import life.zhuyuan.community.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,27 +30,33 @@ public class PublishController {
         model.addAttribute("title", question.getTitle());
         model.addAttribute("description", question.getDescription());
         model.addAttribute("tags", question.getTags());
-        model.addAttribute("id",question.getId());
+        model.addAttribute("id", question.getId());
+        //动态展示标签
+        model.addAttribute("selectTags", TagCache.get());
         return "publish";
     }
 
     @GetMapping("/publish")
-    public String publish() {
+    public String publish(Model model) {
+        //动态展示标签
+        model.addAttribute("selectTags", TagCache.get());
         return "publish";
     }
 
     @PostMapping("/publish")
     public String doPublish(
-            @RequestParam(value = "title",required = false) String title,
-            @RequestParam(value = "description",required = false) String description,
-            @RequestParam(value = "tags",required = false) String tags,
-            @RequestParam(value = "id",required = false)Long id,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "tags", required = false) String tags,
+            @RequestParam(value = "id", required = false) Long id,
             HttpServletRequest request,
             Model model
     ) {
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tags", tags);
+        //动态展示标签
+        model.addAttribute("selectTags", TagCache.get());
         if (title == null || title == "") {
             model.addAttribute("error", "标题不能为空");
             return "publish";
@@ -59,6 +67,12 @@ public class PublishController {
         }
         if (tags == null || tags == "") {
             model.addAttribute("error", "标签不能为空");
+            return "publish";
+        }
+
+        String invalid = TagCache.filterInvalid(tags);
+        if (StringUtils.isNotBlank(invalid)) {
+            model.addAttribute("error", "输入非法标签：" + invalid);
             return "publish";
         }
 
