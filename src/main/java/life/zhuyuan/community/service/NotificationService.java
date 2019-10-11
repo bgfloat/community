@@ -7,7 +7,6 @@ import life.zhuyuan.community.enums.NotificationTypeEnum;
 import life.zhuyuan.community.exception.CustomizeErrorCode;
 import life.zhuyuan.community.exception.CustomizeException;
 import life.zhuyuan.community.mapper.NotificationMapper;
-import life.zhuyuan.community.mapper.UserMapper;
 import life.zhuyuan.community.model.Notification;
 import life.zhuyuan.community.model.NotificationExample;
 import life.zhuyuan.community.model.User;
@@ -22,6 +21,7 @@ import java.util.Objects;
 
 @Service
 public class NotificationService {
+
     @Autowired
     private NotificationMapper notificationMapper;
 
@@ -58,6 +58,8 @@ public class NotificationService {
 
         example.createCriteria()
                 .andReceiverEqualTo(userId);
+        //倒序
+        example.setOrderByClause("gmt_create desc");
 
         List<Notification> notifications = notificationMapper
                 .selectByExampleWithRowbounds(example, new RowBounds(offset, size));

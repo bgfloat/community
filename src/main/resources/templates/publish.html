@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/editormd.min.css">
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
 </head>
@@ -28,12 +30,27 @@
                            placeholder="问题标题...">
                 </div>
                 <!--问题内容框-->
-                <div class="form-group">
+                <div class="form-group" id="questiuon-editor">
                     <label for="title">问题补充（必填，请参照右侧提示）：</label>
-                    <textarea name="description" id="description" th:text="${description}" class="form-control"
+                    <textarea name="description" id="description" th:text="${description}" style="display:none;"
+                              class="form-control"
                               cols="30"
-                              rows="10"></textarea>
+                              rows="10">
+                    </textarea>
                 </div>
+                <!--初始化-->
+                <script type="text/javascript">
+                    $(function () {
+                        var editor = editormd("questiuon-editor", {
+                            width: "100%",
+                            height: 350,
+                            path: "/js/lib/",
+                            delay: 0,
+                            watch: false,
+                            placeholder:"请输入问题内容"
+                        });
+                    });
+                </script>
                 <!--标签框-->
                 <div class="form-group">
                     <label for="tags">添加标签：</label>
