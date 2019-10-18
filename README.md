@@ -14,7 +14,8 @@
 [Lombok](https://projectlombok.org/)  
 [Thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#setting-attribute-values)  
 [Mybatis generator](http://mybatis.org/generator/index.html)  
-[MarkDown 插件](https://pandao.github.io/editor.md/)
+[MarkDown 插件](https://pandao.github.io/editor.md/)   
+[UCloud SDK](https://github.com/ucloud/ufile-sdk-java)
 
 ## 工具
 [Git](https://git-scm.com/download)  
