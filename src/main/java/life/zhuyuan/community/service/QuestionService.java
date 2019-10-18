@@ -2,6 +2,7 @@ package life.zhuyuan.community.service;
 
 import life.zhuyuan.community.dto.PaginationDTO;
 import life.zhuyuan.community.dto.QuestionDTO;
+import life.zhuyuan.community.dto.QuestionQueryDTO;
 import life.zhuyuan.community.exception.CustomizeErrorCode;
 import life.zhuyuan.community.exception.CustomizeException;
 import life.zhuyuan.community.mapper.QuestionExtMapper;
@@ -34,9 +35,18 @@ public class QuestionService {
     private QuestionExtMapper questionExtMapper;
 
     //分页，查询问题
-    public PaginationDTO list(Integer page, Integer size) {
+    public PaginationDTO list(String search, Integer page, Integer size) {
+        //正则
+        if (StringUtils.isNotBlank(search)) {
+            String[] tags = StringUtils.split(search, " ");
+            search = Arrays.stream(tags).collect(Collectors.joining("|"));
+
+        }
+
         PaginationDTO paginationDTO = new PaginationDTO();
-        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
         Integer totalPage;
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
@@ -53,11 +63,10 @@ public class QuestionService {
         paginationDTO.setPagination(totalPage, page, size);
         //每页第一个问题id
         Integer offset = size * (page - 1);
-        //倒序排列
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.setOrderByClause("gmt_create desc");
-        List<Question> questions = questionMapper
-                .selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
+
+        questionQueryDTO.setSize(size);
+        questionQueryDTO.setPage(offset);
+        List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         for (Question question : questions) {
@@ -159,6 +168,7 @@ public class QuestionService {
     }
 
     public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
+        //正则匹配
         if (StringUtils.isBlank(queryDTO.getTags())) {
             return new ArrayList<>();
         }
@@ -170,7 +180,7 @@ public class QuestionService {
         List<Question> questions = questionExtMapper.selectRelated(question);
         List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(q,questionDTO);
+            BeanUtils.copyProperties(q, questionDTO);
             return questionDTO;
         }).collect(Collectors.toList());
         return questionDTOS;
