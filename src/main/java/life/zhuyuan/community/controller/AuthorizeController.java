@@ -5,6 +5,7 @@ import life.zhuyuan.community.dto.GithubUser;
 import life.zhuyuan.community.model.User;
 import life.zhuyuan.community.provider.GithubProvider;
 import life.zhuyuan.community.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
+@Slf4j
 public class AuthorizeController {
 
     @Autowired
@@ -55,16 +57,18 @@ public class AuthorizeController {
             userService.createOrUpdate(user);
             response.addCookie(new Cookie("token", token));
             //登陆成功 写cookie和session
-//            request.getSession().setAttribute("user", githubUser);
             return "redirect:/";
         } else {
+            log.error("callback get github error,{}", githubUser);
+            //登陆失败，重新登录
             return "redirect:/";
         }
     }
+
     @GetMapping("/logout")
-    public String logout( HttpServletRequest request,
-                          HttpServletResponse response
-    ){
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response
+    ) {
         request.getSession().removeAttribute("user");
         Cookie cookie = new Cookie("token", null);
         cookie.setMaxAge(0);
