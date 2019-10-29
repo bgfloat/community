@@ -1,5 +1,26 @@
 ## 竹园社区
 
+## 快速运行
+1. 安装必备工具  
+JDK，Maven
+2. 克隆代码到本地  
+3. 运行命令创建数据库脚本
+```sh
+mvn flyway:migrate
+```
+4. 运行打包命令
+```sh
+mvn package
+```
+5. 运行项目  
+```sh
+java -jar target/community-0.0.1-SNAPSHOT.jar
+```
+6. 访问项目
+```
+http://localhost:8887
+```
+
 ## 资料
 [Spring 文档](https://spring.io/guides)  
 [Spring Web文档](https://spring.io/guides/gs/serving-web-content/)  
@@ -19,7 +40,9 @@
 
 ## 工具
 [Git](https://git-scm.com/download)  
-[VP](https://www.visual-paradigm.com/cn/)
+[VP](https://www.visual-paradigm.com/cn/)  
+[Flyway](https://flywaydb.org/getstarted/firststeps/maven)   
+[Lombok](https://www.projectlombok.org) 
 
 ```bash
 mvn flyway:migrate
